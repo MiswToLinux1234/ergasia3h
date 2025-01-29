@@ -45,7 +45,7 @@ void diax_paraggelias(int cl_socket, int product_id, char *cl_name) {
     pthread_mutex_lock(&lock);
     
     if (product_id < 0 || product_id >= MAX_PRODUCTS) {
-        printf(apanthsh, sizeof(apanthsh), "Invalid product ID.");
+        printf(apanthsh, sizeof(apanthsh), "Mh egkyro product ID.");
     } else {
         Product *product = &catalog[product_id];
         product->item_r++;
@@ -95,8 +95,8 @@ void *client_thread(void *arg) {
         exit(APOTYXIA_EXIT);
     }
 
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT);
+    serv_addr.sin_family = AF_INET; //thetoume thn dieythhnsh mas 
+    serv_addr.sin_port = htons(PORT); //syndeoume thn dieythhnhsh sto port pou dhlwsame pio panw
 
     if (inet_pton(AF_INET, SERVER_IP, &serv_addr.sin_addr) <= 0) {
        perror("Den yposthrizetai h syndesh \n");
@@ -117,7 +117,7 @@ void *client_thread(void *arg) {
         send(sock, buffer, strlen(buffer), 0);
         memset(buffer, 0, sizeof(buffer));
         read(sock, buffer, 1024);
-        printf("%s received: %s\n", client_name, buffer);
+        printf("%s: \n", cl_name, buffer);
         sleep(1);
     }
     close(sock);
