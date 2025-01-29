@@ -19,7 +19,7 @@ typedef struct {
     int item_c;
     int item_r;
     int item_s;
-    char failed_c[MAX_CLIENTS * AITHMATA_ANA_PELATH][50];
+    char failed_c[MAX_PELATES * AITHMATA_ANA_PELATH][50];
     int failed_cnt;
 } Product;
 
@@ -29,7 +29,7 @@ pthread_mutex_t lock;
 // Arxikopoihsh tou katalogou mas
 void arxikopoihsh_catalog() {
     for (int i = 0; i < MAX_PRODUCTS; i++) {
-        printf(catalog[i].perigrafh, "Product_%d", i);
+        printf(catalog[i].perigrafh, sizeof(catalog[i].perigrafh), "Product_%d", i);
         catalog[i].timh = (rand() % 1000) / 10.0;
         catalog[i].item_c = 2;
         catalog[i].item_r = 0;
