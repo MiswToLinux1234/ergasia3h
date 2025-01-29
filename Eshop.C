@@ -12,7 +12,7 @@
 #define AITHMATA_ANA_PELATH 10
 #define SERVER_IP "127.0.0.1"
 
-// Δομή προϊόντος
+// Domh product
 typedef struct {
     char perigrafh[50];
     float timh;
@@ -26,7 +26,7 @@ typedef struct {
 Product catalog[MAX_PRODUCTS];
 pthread_mutex_t lock;
 
-// Αρχικοποίηση καταλόγου προϊόντων
+// Arxikopoihsh tou katalogou mas
 void arxikopoihsh_catalog() {
     for (int i = 0; i < MAX_PRODUCTS; i++) {
         printf(catalog[i].perigrafh, "Product_%d", i);
@@ -38,7 +38,7 @@ void arxikopoihsh_catalog() {
     }
 }
 
-// Επεξεργασία παραγγελίας
+// Diaxeirhsh ths paraggelias
 void diax_paraggelias(int cl_socket, int product_id, char *cl_name) {
     char apanthsh[1024];
 
@@ -65,7 +65,7 @@ void diax_paraggelias(int cl_socket, int product_id, char *cl_name) {
     sleep(1);  // Xronos anamonhs
 }
 
-// Συναρτηση χειρισμού πελάτη
+// Diaxeirhsh tou pelath
 void *diax_pelath(void *socket_desc) {
     int cl_socket = *(int *)socket_desc;
     char buffer[1024] = {0};
@@ -103,7 +103,7 @@ void *client_thread(void *arg) {
         exit(APOTYXIA_EXIT);
     }
 
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) { //emfanizei mynhma apotyxia kai elegxei an o server syndeetai
        perror("Apetyxe h syndesh");
         exit(APOTYXIA_EXIT);
     }
