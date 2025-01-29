@@ -4,8 +4,10 @@ LDFLAGS =
 EXEC = server
 SRCS = Eshop.c
 OBJS = $(SRCS: .c = .o)
+
 #kanonas gia metaglwtissh kai syndesh
 all: $(EXEC)
+
 #Kanonas dhmiourgias ektelesiou arxeiou
 $(EXEC); $(OBJS)
   $(CC) $(OBJS) -o $(EXEC) $(LDFLAGS)
