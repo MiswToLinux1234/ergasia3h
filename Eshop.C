@@ -11,6 +11,8 @@
 #define MAX_PELATES 5
 #define AITHMATA_ANA_PELATH 10
 #define SERVER_IP "127.0.0.1"
+#define MAX_CLIENTS 10
+#define APOTYXIA_EXIT 1
 
 // Domh product
 typedef struct {
@@ -29,7 +31,7 @@ pthread_mutex_t lock;
 // Arxikopoihsh tou katalogou mas
 void arxikopoihsh_catalog() {
     for (int i = 0; i < MAX_PRODUCTS; i++) {
-        printf(catalog[i].perigrafh, sizeof(catalog[i].perigrafh), "Product_%d", i);
+        snprintf(catalog[i].perigrafh, sizeof(catalog[i].perigrafh), "Product_%d", i);
         catalog[i].timh = (rand() % 1000) / 10.0;
         catalog[i].item_c = 2;
         catalog[i].item_r = 0;
@@ -45,17 +47,17 @@ void diax_paraggelias(int cl_socket, int product_id, char *cl_name) {
     pthread_mutex_lock(&lock);
     
     if (product_id < 0 || product_id >= MAX_PRODUCTS) {
-        printf(apanthsh, sizeof(apanthsh), "Mh egkyro product ID.");
+        snprintf(apanthsh, sizeof(apanthsh), "Mh egkyro product ID.");
     } else {
         Product *product = &catalog[product_id];
         product->item_r++;
 
-        if (product->item_count > 0) {
+        if (product->item_c > 0) {
             product->item_c--;
             product->item_s++;
-            printf(apanthsh, sizeof(apanthsh), "H paraggelias einai epityxhs. %f", product->timh);
+            snprintf(apanthsh, sizeof(apanthsh), "H paraggelias einai epityxhs. %f", product->timh);
         } else {
-            printf(apanthsh, sizeof(apanthsh), "Product not available.");
+            snprintf(apanthsh, sizeof(apanthsh), "Product not available.");
             strcpy(product->failed_c[product->failed_cnt++], cl_name);
         }
     }
@@ -88,22 +90,22 @@ void *client_thread(void *arg) {
     struct sockaddr_in serv_addr;
     char buffer[1024] = {0};
     char cl_name[50];
-    printf(cl_name, sizeof(cl_name), "Pelaths_%ld", (long)arg);
+    snprintf(cl_name, sizeof(cl_name), "Pelaths_%ld", (long)arg);
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        perror("Apetyxe h dhmiourgia socket\n");
+        perror("Error creating socket\n");
         exit(APOTYXIA_EXIT);
     }
 
-    serv_addr.sin_family = AF_INET; //thetoume thn dieythhnsh mas 
-    serv_addr.sin_port = htons(PORT); //syndeoume thn dieythhnhsh sto port pou dhlwsame pio panw
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
 
     if (inet_pton(AF_INET, SERVER_IP, &serv_addr.sin_addr) <= 0) {
-       perror("Den yposthrizetai h syndesh \n");
+       perror("Den yposthrizetai h syndesh\n");
         exit(APOTYXIA_EXIT);
     }
 
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) { //emfanizei mynhma apotyxia kai elegxei an o server syndeetai
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
        perror("Apetyxe h syndesh");
         exit(APOTYXIA_EXIT);
     }
@@ -113,11 +115,11 @@ void *client_thread(void *arg) {
 
     for (int i = 0; i < AITHMATA_ANA_PELATH; i++) {
         int product_id = rand() % MAX_PRODUCTS;
-        printf(buffer, sizeof(buffer), "%d", product_id);
+        snprintf(buffer, sizeof(buffer), "%d", product_id);
         send(sock, buffer, strlen(buffer), 0);
         memset(buffer, 0, sizeof(buffer));
         read(sock, buffer, 1024);
-        printf("%s: \n", cl_name, buffer);
+        printf("%s: %s\n", cl_name, buffer);
         sleep(1);
     }
     close(sock);
@@ -139,9 +141,9 @@ int main() {
     address.sin_port = htons(PORT);
     
     bind(server_fd, (struct sockaddr *)&address, sizeof(address));
-    listen(server_fd, MAX_PELATES);
+    listen(server_fd, MAX_CLIENTS);
     
-    pthread_t clients[MAX_PELATES];
+    pthread_t pelates[MAX_PELATES];
     for (long i = 0; i < MAX_PELATES; i++) {
         pthread_create(&pelates[i], NULL, client_thread, (void *)i);
     }
@@ -150,10 +152,17 @@ int main() {
         new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
         pthread_t thread;
         int *new_sock = malloc(sizeof(int));
+        if (new_sock == NULL) {
+            perror("Memory allocation failed");
+            close(new_socket);
+            continue;
+        }
         *new_sock = new_socket;
         pthread_create(&thread, NULL, diax_pelath, (void*) new_sock);
         pthread_detach(thread);
     }
     pthread_mutex_destroy(&lock);
+    return 0;
+}
     return 0;
 }
