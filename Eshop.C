@@ -85,12 +85,12 @@ void *diax_pelath(void *socket_desc) {
 }
 
 // Diergasia Pelath
-void *client_thread(void *arg) {
+void *client_thread(void *arg) {  //Dhmiourgoume mia synarthsh client thread gia na : Dhmiourghsoume ena socket to opoio tha syndethei ston server mas
     int sock = 0;
     struct sockaddr_in serv_addr;
     char buffer[1024] = {0};
     char cl_name[50];
-    snprintf(cl_name, sizeof(cl_name), "Pelaths_%ld", (long)arg);
+    snprintf(cl_name, sizeof(cl_name), "Pelaths_%ld", (long)arg); //Tha steilei to onoma tou pelath ston server mas
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("Error creating socket\n");
@@ -113,7 +113,7 @@ void *client_thread(void *arg) {
     send(sock, cl_name, strlen(cl_name), 0);
     sleep(1);
 
-    for (int i = 0; i < AITHMATA_ANA_PELATH; i++) {
+    for (int i = 0; i < AITHMATA_ANA_PELATH; i++) { //Tha steilei tyxeia product_id mexri to max aithmatwn(10) kai emfanizei to analogo mynhma
         int product_id = rand() % MAX_PRODUCTS;
         snprintf(buffer, sizeof(buffer), "%d", product_id);
         send(sock, buffer, strlen(buffer), 0);
@@ -126,12 +126,12 @@ void *client_thread(void *arg) {
     return NULL;
 }
 
-int main() {
+int main() { // sthn main arxikopoioume ton katalogo mas kai to mutex loc gia asfalh prosvash apo polla nhmata
     srand(time(NULL));
     arxikopoihsh_catalog();
     pthread_mutex_init(&lock, NULL);
 
-    int server_fd, new_socket;
+    int server_fd, new_socket; // o serve dhmiourgei socket
     struct sockaddr_in address;
     int addrlen = sizeof(address);
     
@@ -149,7 +149,7 @@ int main() {
     }
 
     while (1) {
-        new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
+        new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen); // kai mesw ths accept dexetai syndeseis 
         pthread_t thread;
         int *new_sock = malloc(sizeof(int));
         if (new_sock == NULL) {
@@ -158,8 +158,8 @@ int main() {
             continue;
         }
         *new_sock = new_socket;
-        pthread_create(&thread, NULL, diax_pelath, (void*) new_sock);
-        pthread_detach(thread);
+        pthread_create(&thread, NULL, diax_pelath, (void*) new_sock); // me thn pthread_create tha diaxeiristoume kathe nea syndesh pealth 
+        pthread_detach(thread); // kai xrhsimopoioume thn pthread_detach gia gia apodeusmeysh twn nhmatwn automatws efoson oloklhrwthei h ektelsh tous
     }
     pthread_mutex_destroy(&lock);
     return 0;
