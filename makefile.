@@ -4,23 +4,23 @@ LDFLAGS =
 EXEC = server
 SRCS = Eshop.c
 OBJS = $(SRCS: .c = .o)
-//lanonas gia metaglwtissh kai syndesh
+#kanonas gia metaglwtissh kai syndesh
 all: $(EXEC)
-//Kanonas dhmiourgias ektelesiou arxeiou
+#Kanonas dhmiourgias ektelesiou arxeiou
 $(EXEC); $(OBJS)
   $(CC) $(OBJS) -o $(EXEC) $(LDFLAGS)
   
-//Metaglwtissh apo .c se .o antikeimeno 
+#Metaglwtissh apo .c se .o antikeimeno 
   
   %.o: %.c
    $(CC) $(CFLAGS) -c $< -o $@
    
-//Katharismos arxeiou kai tou ektelsimou
+#Katharismos arxeiou kai tou ektelsimou
    
    clean: 
    rm -f $(OBJS) $(EXEC)
    
-//Ektelesh arxeiou
+#Ektelesh arxeiou
 
    run: $(EXEC)
     ./$(EXEC)
