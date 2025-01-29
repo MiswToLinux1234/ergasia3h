@@ -8,8 +8,8 @@
 
 #define PORT 8080
 #define MAX_PRODUCTS 20
-#define MAX_CLIENTS 5
-#define REQUESTS_PER_CLIENT 10
+#define MAX_PELATES 5
+#define AITHMATA_ANA_PELATH 10
 #define SERVER_IP "127.0.0.1"
 
 // Δομή προϊόντος
@@ -62,7 +62,7 @@ void diax_paraggelias(int cl_socket, int product_id, char *cl_name) {
     pthread_mutex_unlock(&lock);
 
     send(cl_socket, apanthsh, strlen(apanthsh), 0);
-    sleep(1);  // Χρόνος anamonhs
+    sleep(1);  // Xronos anamonhs
 }
 
 // Συναρτηση χειρισμού πελάτη
