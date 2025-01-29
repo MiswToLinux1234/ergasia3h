@@ -139,7 +139,7 @@ int main() {
     address.sin_port = htons(PORT);
     
     bind(server_fd, (struct sockaddr *)&address, sizeof(address));
-    listen(server_fd, MAX_CLIENTS);
+    listen(server_fd, MAX_PELATES);
     
     pthread_t clients[MAX_PELATES];
     for (long i = 0; i < MAX_PELATES; i++) {
